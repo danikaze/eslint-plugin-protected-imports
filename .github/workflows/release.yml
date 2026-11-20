@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: read
+
+env:
+  HUSKY: '0'
+
+jobs:
+  publish:
+    if: ${{ !github.event.deleted }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out tagged commit
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Build npm package and release ZIP
+        run: npm run build
+
+      - name: Publish GitHub release with ZIP
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          shopt -s nullglob
+          archives=(dist/*.zip)
+          if (( ${#archives[@]} != 1 )); then
+            echo "Expected one release ZIP, found ${#archives[@]}." >&2
+            exit 1
+          fi
+          archive="${archives[0]}"
+          checksum=$(sha256sum < "$archive")
+          checksum="${checksum%% *}"
+          notes=$(printf '### ZIP checksum (SHA-256)\n\n`%s`  `%s`' "${archive##*/}" "$checksum")
+          gh release create "$GITHUB_REF_NAME" "$archive" \
+            --verify-tag --generate-notes --notes "$notes"

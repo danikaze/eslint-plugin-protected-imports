@@ -1,0 +1,58 @@
+{
+  "name": "eslint-plugin-protected-imports",
+  "version": "0.1.0",
+  "description": "Provide protected imports in your JavaScript and TypeScript projects",
+  "author": "danikaze <danikaze@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danikaze/eslint-plugin-protected-imports.git"
+  },
+  "bugs": {
+    "url": "https://github.com/danikaze/eslint-plugin-protected-imports/issues"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24"
+  },
+  "peerDependencies": {
+    "eslint": "^9.0.0 || ^10.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/estree": "^1.0.10",
+    "@types/node": "^22.20.5",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "fflate": "^0.8.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.10.1",
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.0"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:all": "npm run typecheck && npm run test",
+    "typecheck": "tsc --noEmit",
+    "compile": "tsc",
+    "build": "npm run compile && node scripts/package.js",
+    "prepack": "npm run compile",
+    "format": "prettier --write --ignore-unknown",
+    "format:all": "npm run format -- .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  }
+}
