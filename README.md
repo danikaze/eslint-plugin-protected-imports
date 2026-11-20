@@ -62,9 +62,10 @@ your runtime or bundler does not map a directory import to that entry.
 
 ## Development and release
 
-Run `npm ci`, `npm run lint`, and `npm run test:all`. The latter runs TypeScript
-checking and Vitest. Use `npm test` to run Vitest alone. CI checks ESLint 9 and 10
-on Node.js 22 and 24.
+The plugin supports Node.js 24 and 26 actively in CI, but it should work with
+other versions too. Run `npm ci`, `npm run lint`, and `npm run test:all`. The
+latter runs TypeScript checking and Vitest. Use `npm test` to run Vitest alone.
+CI checks ESLint 9 and 10 on both supported Node.js versions.
 
 CI runs on branch pushes, pull requests, and merge queues. In the GitHub branch
 ruleset for the default branch, require pull requests and the
